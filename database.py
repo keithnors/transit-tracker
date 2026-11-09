@@ -127,6 +127,23 @@ def delete_record(record_id):
 
 
 
+def record_exists(record_id):
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM transit_records WHERE id = ?",
+        (record_id,)
+    )
+
+    record = cursor.fetchone()
+
+    conn.close()
+
+    return record is not None
+
+
 if __name__ == "__main__":
     create_table()
 
