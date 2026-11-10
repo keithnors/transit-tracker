@@ -1,4 +1,6 @@
 import sqlite3
+import csv
+import shutil
 
 # Connect to database
 def connect_db():
@@ -144,11 +146,63 @@ def record_exists(record_id):
     return record is not None
 
 
+
+def export_csv():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM transit_records
+    """)
+
+    records = cursor.fetchall()
+
+    with open(
+        "database/transit_records.csv",
+        "w",
+        newline=""
+    ) as file:
+
+        writer = csv.writer(file)
+
+        writer.writerow([
+            "ID",
+            "Vehicle Name",
+            "Route",
+            "Departure Time",
+            "Arrival Time",
+            "Passengers"
+        ])
+
+        writer.writerows(records)
+
+    conn.close()
+
+    print(
+        "CSV exported successfully!"
+    )
+
+def backup_database():
+
+    shutil.copy(
+        "database/transit.db",
+        "database/backup.db"
+    )
+
+    print(
+        "Database backup created!"
+    )
+
+
+
 if __name__ == "__main__":
     create_table()
+    
+    backup_database()
 
-
-
+    
+#export_csv()
 #view_records()
 #delete_record(1)
 #update_record(

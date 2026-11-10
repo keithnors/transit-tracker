@@ -4,6 +4,39 @@ from analytics import *
 
 from functions import bubble_sort_passengers, search_departure, search_route, search_vehicle, sort_passengers, sort_vehicle_name
 
+
+def export_menu():
+
+    while True:
+
+        print("\n===== EXPORT MENU =====")
+
+        print("1. Export CSV")
+        print("2. Backup Database")
+        print("3. Back")
+
+        choice = input(
+            "Choose: "
+        )
+
+        if choice == "1":
+
+            export_csv()
+
+        elif choice == "2":
+
+            backup_database()
+
+        elif choice == "3":
+
+            break
+
+        else:
+
+            print(
+                "Invalid Choice."
+            )
+
 def get_passenger_input():
 
     while True:
@@ -59,7 +92,8 @@ def main_menu():
         print("6. Sort Records")
         print("7. Analytics")
         print("8. Charts")
-        print("9. Exit")
+        print("9. Export Features")
+        print("10. Exit")
         
 
         choice = input("\nEnter choice: ")
@@ -89,6 +123,9 @@ def main_menu():
             charts_menu()
 
         elif choice == "9":
+            export_menu()
+
+        elif choice == "10":
             print("Thank you for using Transit Tracker!")
         break    
         
