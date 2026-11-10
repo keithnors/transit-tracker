@@ -7,3 +7,6 @@ ID,Vehicle Name,Route,Departure Time,Arrival Time,Passengers
 10,TEST BUS,TEST ROUTE,08:00,10:00,25
 11,TEST BUS,TEST ROUTE,08:00,10:00,25
 12,TEST BUS,TEST ROUTE,08:00,10:00,25
+13,Victory,Cauayan-Manila,8:00,14:00,35
+14,Dalin,Tuguegarao-Manila,6:00,12:00,40
+15,Five Star,Santiago-Manila,9:00,15:00,38
