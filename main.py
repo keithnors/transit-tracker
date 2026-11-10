@@ -1,3 +1,5 @@
+from py_compile import main
+
 from database import *
 from functions import *
 from analytics import *
@@ -28,8 +30,8 @@ def export_menu():
             backup_database()
 
         elif choice == "3":
-
-            break
+            main_menu()
+            
 
         else:
 
@@ -127,6 +129,7 @@ def main_menu():
 
         elif choice == "10":
             print("Thank you for using Transit Tracker!")
+            main_menu()
         break    
         
     else:
@@ -179,7 +182,7 @@ def add_menu():
         arrival_time,
         passengers
     )
-
+    main_menu()
 def update_menu():
 
     record_id = int(
@@ -295,7 +298,7 @@ def search_menu():
             search_departure(departure)
 
         elif choice == "4":
-            break
+            main_menu()
 
         else:
             print("Invalid Choice")
@@ -325,7 +328,7 @@ def sort_menu():
             bubble_sort_passengers()
 
         elif choice == "4":
-            break
+            main_menu()
 
         else:
             print("Invalid Choice")
@@ -366,7 +369,8 @@ def analytics_menu():
             route_statistics()
 
         elif choice == "6":
-            break
+            
+            main_menu()
 
         else:
             print("Invalid Choice")
