@@ -1,7 +1,130 @@
 import sqlite3
+import matplotlib.pyplot as plt
 
 def connect_db():
     return sqlite3.connect("database/transit.db")
+
+
+def vehicle_usage_chart():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT vehicle_name,
+               COUNT(*)
+        FROM transit_records
+        GROUP BY vehicle_name
+    """)
+
+    results = cursor.fetchall()
+
+    conn.close()
+
+    vehicles = []
+    trips = []
+
+    for row in results:
+        vehicles.append(row[0])
+        trips.append(row[1])
+
+    plt.figure(figsize=(8, 5))
+
+    plt.bar(
+        vehicles,
+        trips,
+        color="green"
+    )
+
+    plt.title("Vehicle Usage")
+    plt.xlabel("Vehicle")
+    plt.ylabel("Trips")
+
+    plt.tight_layout()
+
+    plt.savefig("charts/vehicle_chart.png")
+
+    plt.show()
+
+    print("Vehicle chart saved!")
+
+
+def passenger_bar_chart():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT vehicle_name,
+               SUM(passengers)
+        FROM transit_records
+        GROUP BY vehicle_name
+    """)
+
+    results = cursor.fetchall()
+
+    conn.close()
+
+    vehicles = []
+    passengers = []
+
+    for row in results:
+        vehicles.append(row[0])
+        passengers.append(row[1])
+
+    plt.figure(figsize=(8, 5))
+    plt.bar(vehicles, passengers)
+
+    plt.title("Passengers per Vehicle")
+    plt.xlabel("Vehicle")
+    plt.ylabel("Passengers")
+
+    plt.tight_layout()
+
+    plt.savefig("charts/passenger_chart.png")
+
+    plt.show()
+
+    print("Passenger chart saved!")
+
+def route_pie_chart():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT route,
+               SUM(passengers)
+        FROM transit_records
+        GROUP BY route
+    """)
+
+    results = cursor.fetchall()
+
+    conn.close()
+
+    routes = []
+    values = []
+
+    for row in results:
+        routes.append(row[0])
+        values.append(row[1])
+
+    plt.figure(figsize=(7, 7))
+
+    plt.pie(
+        values,
+        labels=routes,
+        autopct="%1.1f%%"
+    )
+
+    plt.title("Route Distribution")
+
+    plt.savefig("charts/route_chart.png")
+
+    plt.show()
+
+    print("Route chart saved!")
 
 def total_passengers():
 
@@ -186,7 +309,9 @@ if __name__ == "__main__":
     print("5. Route Statistics")
     print("6. Peak Travel Hours")
     print("7. Top 5 Routes")
-
+    print("8. Passenger Bar Chart")
+    print("9. Route Pie Chart")
+    print("10. Vehicle Usage Chart")
     choice = input("Choose: ")
 
     if choice == "1":
@@ -210,3 +335,11 @@ if __name__ == "__main__":
     elif choice == "7":
         top_5_routes()
 
+    elif choice == "8":
+        passenger_bar_chart()
+
+    elif choice == "9":
+        route_pie_chart()
+
+    elif choice == "10":
+        vehicle_usage_chart()

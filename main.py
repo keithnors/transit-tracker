@@ -4,6 +4,39 @@ from analytics import *
 
 from functions import bubble_sort_passengers, search_departure, search_route, search_vehicle, sort_passengers, sort_vehicle_name
 
+
+def export_menu():
+
+    while True:
+
+        print("\n===== EXPORT MENU =====")
+
+        print("1. Export CSV")
+        print("2. Backup Database")
+        print("3. Back")
+
+        choice = input(
+            "Choose: "
+        )
+
+        if choice == "1":
+
+            export_csv()
+
+        elif choice == "2":
+
+            backup_database()
+
+        elif choice == "3":
+
+            break
+
+        else:
+
+            print(
+                "Invalid Choice."
+            )
+
 def get_passenger_input():
 
     while True:
@@ -58,7 +91,10 @@ def main_menu():
         print("5. Search Records")
         print("6. Sort Records")
         print("7. Analytics")
-        print("8. Exit")
+        print("8. Charts")
+        print("9. Export Features")
+        print("10. Exit")
+        
 
         choice = input("\nEnter choice: ")
 
@@ -84,12 +120,46 @@ def main_menu():
             analytics_menu()
 
         elif choice == "8":
+            charts_menu()
+
+        elif choice == "9":
+            export_menu()
+
+        elif choice == "10":
             print("Thank you for using Transit Tracker!")
-            break
+        break    
+        
+    else:
+        print("Invalid Choice.")
+
+
+def charts_menu():
+
+    while True:
+
+        print("\n===== CHARTS =====")
+
+        print("1. Passenger Chart")
+        print("2. Route Chart")
+        print("3. Vehicle Usage Chart")
+        print("4. Back")
+
+        choice = input("Choose: ")
+
+        if choice == "1":
+            passenger_bar_chart()
+
+        elif choice == "2":
+            route_pie_chart()
+
+        elif choice == "3":
+            vehicle_usage_chart()
+
+        elif choice == "4":
+            main_menu()
 
         else:
-            print("Invalid Choice.")
-
+            print("Invalid choice.")
 
 def add_menu():
 
