@@ -4,3 +4,6 @@ ID,Vehicle Name,Route,Departure Time,Arrival Time,Passengers
 7,Florida,Cauayan-Dagupan,5:00,12:00,55
 8,Dalin,Ilagan-Tuguegarao,5:00,7:00,45
 9,Victory,Baguio-Cauayan,4:00,9:00,50
+10,TEST BUS,TEST ROUTE,08:00,10:00,25
+11,TEST BUS,TEST ROUTE,08:00,10:00,25
+12,TEST BUS,TEST ROUTE,08:00,10:00,25
