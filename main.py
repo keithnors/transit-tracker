@@ -105,7 +105,8 @@ def main_menu():
 
         elif choice == "2":
             view_records()
-
+            main_menu()
+            
         elif choice == "3":
             update_menu()
 

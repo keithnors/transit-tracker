@@ -1,5 +1,4 @@
 ID,Vehicle Name,Route,Departure Time,Arrival Time,Passengers
-5,Partas Express,Cauayan-Ilagan,8:00,10:00,50
 6,Victory,Ilagan-Cauayan,9:00,11:00,50
 7,Florida,Cauayan-Dagupan,5:00,12:00,55
 8,Dalin,Ilagan-Tuguegarao,5:00,7:00,45
@@ -10,3 +9,5 @@ ID,Vehicle Name,Route,Departure Time,Arrival Time,Passengers
 13,Victory,Cauayan-Manila,8:00,14:00,35
 14,Dalin,Tuguegarao-Manila,6:00,12:00,40
 15,Five Star,Santiago-Manila,9:00,15:00,38
+16,Victory,Cauayan-Baguio,4:00,12:00,45
+17,Victory,Baguio-Cauayan,8:00,1:00,55
