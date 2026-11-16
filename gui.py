@@ -10,7 +10,7 @@ ctk.set_default_color_theme("blue")
 app = ctk.CTk()
 
 app.title("Transit Tracker Dashboard")
-app.geometry("1200x700")
+app.geometry("1000x500")
 
 # Sidebar
 sidebar = ctk.CTkFrame(
@@ -140,7 +140,8 @@ table_title.pack(
 #Sidebar Navigation
 dashboard_btn = ctk.CTkButton(
     sidebar,
-    text="Dashboard"
+    text="Dashboard",
+    command=view_records
 )
 
 dashboard_btn.pack(
@@ -215,18 +216,62 @@ dashboard_btn.pack(
     pady=5
 )
 
-dashboard_btn = ctk.CTkButton(
+exit_btn = ctk.CTkButton(
     sidebar,
-    text="Exit"
+    text="Exit",
+    command=app.destroy,
+    fg_color="red"
 )
 
-dashboard_btn.pack(
+exit_btn.pack(
     fill="x",
     padx=10,
     pady=5
 )
 
 
+table_title.pack(
+    pady=20
+)
+records_box = ctk.CTkTextbox(
+    records_frame,
+    width=900,
+    height=400
+)
+
+records_box.pack(
+    fill="both",
+    expand=True,
+    padx=20,
+    pady=20
+)
+
+
+def show_records():
+
+    records_box.delete(
+        "1.0",
+        "end"
+    )
+
+    conn = connect_db()
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM transit_records"
+    )
+
+    records = cursor.fetchall()
+
+    conn.close()
+
+    for record in records:
+
+        records_box.insert(
+            "end",
+            str(record) + "\n"
+        )
 
 
 
