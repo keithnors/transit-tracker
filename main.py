@@ -345,7 +345,8 @@ def analytics_menu():
         print("3. Most Used Route")
         print("4. Most Used Vehicle")
         print("5. Route Statistics")
-        print("6. Back")
+        print("6. Transit Summary")
+        print("7. Back")
 
         choice = input("Choose: ")
 
@@ -370,6 +371,9 @@ def analytics_menu():
             route_statistics()
 
         elif choice == "6":
+            dashboard_summary()
+
+        elif choice == "7":
             
             main_menu()
 

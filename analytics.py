@@ -73,7 +73,25 @@ def passenger_bar_chart():
         passengers.append(row[1])
 
     plt.figure(figsize=(8, 5))
-    plt.bar(vehicles, passengers)
+    bars = plt.bar(
+    vehicles,
+    passengers,
+    color="royalblue"
+)
+    for bar in bars:
+
+        height = bar.get_height()
+
+    plt.text(
+        bar.get_x() +
+        bar.get_width()/2,
+
+        height,
+
+        str(height),
+
+        ha='center'
+    )
 
     plt.title("Passengers per Vehicle")
     plt.xlabel("Vehicle")
@@ -86,6 +104,59 @@ def passenger_bar_chart():
     plt.show()
 
     print("Passenger chart saved!")
+
+
+def route_comparison_chart():
+
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT route,
+           SUM(passengers)
+    FROM transit_records
+    GROUP BY route
+    """)
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    routes = [
+        x[0]
+        for x in data
+    ]
+
+    passengers = [
+        x[1]
+        for x in data
+    ]
+
+    plt.figure(
+        figsize=(9, 5)
+    )
+
+    plt.barh(
+        routes,
+        passengers,
+        color="green"
+    )
+
+    plt.xlabel("Passengers")
+
+    plt.ylabel("Routes")
+
+    plt.title(
+        "Route Comparison"
+    )
+
+    plt.tight_layout()
+
+    plt.savefig(
+        "charts/route_comparison.png"
+    )
+
+    plt.show()
 
 def route_pie_chart():
 
@@ -118,6 +189,18 @@ def route_pie_chart():
         autopct="%1.1f%%"
     )
 
+    centre_circle = plt.Circle(
+    (0, 0),
+    0.70,
+    fc='white'
+    )
+
+    fig = plt.gcf()
+
+    fig.gca().add_artist(
+    centre_circle
+    )
+        
     plt.title("Route Distribution")
 
     plt.savefig("charts/route_chart.png")
@@ -275,26 +358,44 @@ def top_5_routes():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT route,
-               SUM(passengers)
-        FROM transit_records
-        GROUP BY route
-        ORDER BY SUM(passengers) DESC
-        LIMIT 5
+    SELECT route,
+           SUM(passengers)
+    FROM transit_records
+    GROUP BY route
+    ORDER BY SUM(passengers) DESC
+    LIMIT 5
     """)
 
-    routes = cursor.fetchall()
+    results = cursor.fetchall()
 
-    print("\nTOP 5 BUSIEST ROUTES")
+    print(
+        "\nTOP 5 BUSIEST ROUTES"
+    )
 
-    for index, route in enumerate(routes, start=1):
+    for i, route in enumerate(results, start=1):
+
         print(
-            f"{index}. {route[0]} "
+            f"{i}. {route[0]} "
             f"({route[1]} passengers)"
         )
 
     conn.close()
 
+def dashboard_summary():
+
+    print("\n========== TRANSIT SUMMARY ==========")
+
+    total_passengers()
+
+    average_passengers()
+
+    most_used_route()
+
+    most_used_vehicle()
+
+    peak_travel_hours()
+
+    print("=====================================")
 
 
 ####TESTING LANG PO ITO HINDI ITO YONG MAIN.py
@@ -310,8 +411,10 @@ if __name__ == "__main__":
     print("6. Peak Travel Hours")
     print("7. Top 5 Routes")
     print("8. Passenger Bar Chart")
-    print("9. Route Pie Chart")
-    print("10. Vehicle Usage Chart")
+    print("9. Route Comparison Chart")
+    print("10. Route Pie Chart")
+    print("11. Vehicle Usage Chart")
+    print("12. Transit Summary")
     choice = input("Choose: ")
 
     if choice == "1":
@@ -339,7 +442,13 @@ if __name__ == "__main__":
         passenger_bar_chart()
 
     elif choice == "9":
-        route_pie_chart()
+        route_comparison_chart()
 
     elif choice == "10":
+        route_pie_chart()
+
+    elif choice == "11":
         vehicle_usage_chart()
+
+    elif choice == "12":
+        dashboard_summary()
