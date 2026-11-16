@@ -53,27 +53,23 @@ def add_record(vehicle_name, route,
 
 
 # READ
-def view_records():
+from tabulate import tabulate
 
+def view_records():
     conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM transit_records")
-
     records = cursor.fetchall()
 
     if not records:
         print("No records found.")
+        return
 
-    for record in records:
-        print(
-            f"ID: {record[0]} | "
-            f"Vehicle: {record[1]} | "
-            f"Route: {record[2]} | "
-            f"Departure: {record[3]} | "
-            f"Arrival: {record[4]} | "
-            f"Passengers: {record[5]}"
-        )
+    headers = ["ID", "Vehicle", "Route", "Departure", "Arrival", "Passengers"]
+    print(tabulate(records, headers=headers, tablefmt="grid"))
+
+    conn.close()
 
     conn.close()
 

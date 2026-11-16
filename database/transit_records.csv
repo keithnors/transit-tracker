@@ -11,3 +11,8 @@ ID,Vehicle Name,Route,Departure Time,Arrival Time,Passengers
 15,Five Star,Santiago-Manila,9:00,15:00,38
 16,Victory,Cauayan-Baguio,4:00,12:00,45
 17,Victory,Baguio-Cauayan,8:00,1:00,55
+18,Loand,Aurora-Echague,3:00,5:00,15
+19,Rusi,Ramon-Echague,6:00,6:40,23
+20,Vpress,cubao-Baguio,5:00,10:00,54
+22,Florida,quezon-quirino,12:00,00:00,45
+23,Bach Express,Tagaytay-Baguio,10:45,16:00,40
