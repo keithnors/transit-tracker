@@ -18,36 +18,88 @@ def vehicle_usage_chart():
     """)
 
     results = cursor.fetchall()
-
     conn.close()
 
-    vehicles = []
-    trips = []
+    if not results:
+        print("No vehicle data found.")
+        return
 
-    for row in results:
-        vehicles.append(row[0])
-        trips.append(row[1])
+    # Sort from highest to lowest
+    results.sort(key=lambda x: x[1], reverse=True)
 
-    plt.figure(figsize=(8, 5))
+    vehicles = [row[0] for row in results]
+    trips = [row[1] for row in results]
 
-    plt.bar(
+    highest = max(trips)
+
+    # Highlight most-used vehicle
+    colors = [
+        "crimson" if trip == highest else "steelblue"
+        for trip in trips
+    ]
+
+    plt.figure(figsize=(12, 7))
+
+    bars = plt.barh(
         vehicles,
         trips,
-        color="green"
+        color=colors
     )
 
-    plt.title("Vehicle Usage")
-    plt.xlabel("Vehicle")
-    plt.ylabel("Trips")
+    # Highest vehicle on top
+    plt.gca().invert_yaxis()
+
+    # Space on right side
+    plt.xlim(0, highest * 1.15)
+
+    # Values inside bars
+    for bar in bars:
+        width = bar.get_width()
+
+        plt.text(
+            width * 0.95,
+            bar.get_y() + bar.get_height() / 2,
+            f"{int(width)}",
+            ha='right',
+            va='center',
+            color='white',
+            fontweight='bold',
+            fontsize=10
+        )
+
+    plt.title(
+        "Vehicle Usage Based on Number of Trips",
+        fontsize=16,
+        fontweight='bold'
+    )
+
+    plt.xlabel(
+        "Number of Trips",
+        fontsize=12
+    )
+
+    plt.ylabel(
+        "Vehicle",
+        fontsize=12
+    )
+
+    plt.grid(
+        axis='x',
+        linestyle='--',
+        alpha=0.4
+    )
 
     plt.tight_layout()
 
-    plt.savefig("charts/vehicle_chart.png")
+    plt.savefig(
+        "charts/vehicle_chart.png",
+        dpi=300,
+        bbox_inches="tight"
+    )
 
     plt.show()
 
-    print("Vehicle chart saved!")
-
+    print("✅ Vehicle chart saved!")
 
 def passenger_bar_chart():
 
@@ -62,40 +114,57 @@ def passenger_bar_chart():
     """)
 
     results = cursor.fetchall()
-
     conn.close()
 
-    vehicles = []
-    passengers = []
+    # Sort by passenger count (highest first)
+    results.sort(key=lambda x: x[1], reverse=True)
 
-    for row in results:
-        vehicles.append(row[0])
-        passengers.append(row[1])
+    vehicles = [row[0] for row in results]
+    passengers = [row[1] for row in results]
 
-    plt.figure(figsize=(8, 5))
+    # Highlight highest vehicle
+    max_passengers = max(passengers)
+
+    colors = [
+        'crimson' if p == max_passengers else 'steelblue'
+        for p in passengers
+    ]
+
+    plt.figure(figsize=(10, 6))
+
     bars = plt.bar(
-    vehicles,
-    passengers,
-    color="royalblue"
-)
-    for bar in bars:
-
-        height = bar.get_height()
-
-    plt.text(
-        bar.get_x() +
-        bar.get_width()/2,
-
-        height,
-
-        str(height),
-
-        ha='center'
+        vehicles,
+        passengers,
+        color=colors
     )
 
-    plt.title("Passengers per Vehicle")
+    # Add labels on top of bars
+    for bar in bars:
+        height = bar.get_height()
+
+        plt.text(
+            bar.get_x() + bar.get_width()/2,
+            height + 1,
+            f"{int(height)}",
+            ha='center',
+            va='bottom',
+            fontweight='bold'
+        )
+
+    plt.title(
+        "Total Passengers per Vehicle",
+        fontsize=14,
+        fontweight='bold'
+    )
+
     plt.xlabel("Vehicle")
-    plt.ylabel("Passengers")
+    plt.ylabel("Total Passengers")
+
+    plt.grid(
+        axis='y',
+        linestyle='--',
+        alpha=0.5
+    )
 
     plt.tight_layout()
 
@@ -103,60 +172,103 @@ def passenger_bar_chart():
 
     plt.show()
 
-    print("Passenger chart saved!")
-
-
+    print("✅ Passenger chart saved!")
+    
 def route_comparison_chart():
 
     conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT route,
-           SUM(passengers)
-    FROM transit_records
-    GROUP BY route
+        SELECT route,
+               SUM(passengers)
+        FROM transit_records
+        GROUP BY route
     """)
 
     data = cursor.fetchall()
-
     conn.close()
 
-    routes = [
-        x[0]
-        for x in data
+    if not data:
+        print("No route data found.")
+        return
+
+    # Sort routes by passenger count (highest first)
+    data.sort(key=lambda x: x[1], reverse=True)
+
+    routes = [row[0] for row in data]
+    passengers = [row[1] for row in data]
+
+    highest = max(passengers)
+
+    # Highlight busiest route
+    colors = [
+        "crimson" if p == highest else "steelblue"
+        for p in passengers
     ]
 
-    passengers = [
-        x[1]
-        for x in data
-    ]
+    plt.figure(figsize=(12, 7))
 
-    plt.figure(
-        figsize=(9, 5)
-    )
-
-    plt.barh(
+    bars = plt.barh(
         routes,
         passengers,
-        color="green"
+        color=colors
     )
 
-    plt.xlabel("Passengers")
+    # Highest value on top
+    plt.gca().invert_yaxis()
 
-    plt.ylabel("Routes")
+    # Add some space to the right
+    plt.xlim(0, highest * 1.1)
+
+    # Display values inside bars
+    for bar in bars:
+        width = bar.get_width()
+
+        plt.text(
+            width * 0.95,  # position inside bar
+            bar.get_y() + bar.get_height() / 2,
+            f"{int(width)}",
+            ha='right',
+            va='center',
+            color='white',
+            fontweight='bold',
+            fontsize=10
+        )
 
     plt.title(
-        "Route Comparison"
+        "Passenger Volume by Route",
+        fontsize=16,
+        fontweight='bold'
+    )
+
+    plt.xlabel(
+        "Total Passengers",
+        fontsize=12
+    )
+
+    plt.ylabel(
+        "Routes",
+        fontsize=12
+    )
+
+    plt.grid(
+        axis='x',
+        linestyle='--',
+        alpha=0.4
     )
 
     plt.tight_layout()
 
     plt.savefig(
-        "charts/route_comparison.png"
+        "charts/route_comparison.png",
+        dpi=300,
+        bbox_inches="tight"
     )
 
     plt.show()
+
+    print("✅ Route comparison chart saved!")
 
 def route_pie_chart():
 

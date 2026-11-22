@@ -339,46 +339,62 @@ def analytics_menu():
     while True:
 
         print("\n===== ANALYTICS =====")
-
         print("1. Total Passengers")
         print("2. Average Passengers")
         print("3. Most Used Route")
         print("4. Most Used Vehicle")
         print("5. Route Statistics")
-        print("6. Transit Summary")
-        print("7. Back")
-
+        print("6. Peak Travel Hours")
+        print("7. Top 5 Routes")
+        print("8. Passenger Bar Chart")
+        print("9. Route Comparison Chart")
+        print("10. Route Pie Chart")
+        print("11. Vehicle Usage Chart")
+        print("12. Transit Summary")
         choice = input("Choose: ")
 
         if choice == "1":
-
             total_passengers()
 
         elif choice == "2":
-
             average_passengers()
 
         elif choice == "3":
-
             most_used_route()
 
         elif choice == "4":
-
             most_used_vehicle()
 
         elif choice == "5":
-
             route_statistics()
 
         elif choice == "6":
+            peak_travel_hours()
+
+        elif choice == "7":
+            top_5_routes()
+
+        elif choice == "8":
+            passenger_bar_chart()
+
+        elif choice == "9":
+            route_comparison_chart()
+
+        elif choice == "10":
+            route_pie_chart()
+
+        elif choice == "11":
+            vehicle_usage_chart()
+
+        elif choice == "12":
             dashboard_summary()
 
         elif choice == "7":
-            
-            main_menu()
+                
+                main_menu()
 
         else:
-            print("Invalid Choice")
+                print("Invalid Choice")
 
 
 if __name__ == "__main__":
